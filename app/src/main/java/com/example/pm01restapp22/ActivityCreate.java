@@ -41,23 +41,30 @@ public class ActivityCreate extends AppCompatActivity {
     }
 
     private void CreateAuto(){
-        PostString = RestApiMethods.ApiCreate;
+        JSONObject JSONAuto;
+
         HashMap<String, String> parametros = new HashMap<>();
 
         parametros.put("modelo", "Mazda r3");
         parametros.put("marca", "Mazda");
         parametros.put("precio", "130000");
         parametros.put("year", "2022");
+        parametros.put("foto", "2022");
+
+        PostString = RestApiMethods.ApiCreate;
+        JSONAuto = new JSONObject(parametros);
+
+        RequestQueue peticion = Volley.newRequestQueue(getApplicationContext());
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
                 PostString,
-                new JSONObject(parametros),
+                JSONAuto,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray respuesta = response.getJSONArray("respuesta");
+                            JSONArray jsonArray = new JSONArray(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -70,7 +77,6 @@ public class ActivityCreate extends AppCompatActivity {
             }
         );
 
-        RequestQueue peticion = Volley.newRequestQueue(getApplicationContext());
         peticion.add(request);
     }
 }
